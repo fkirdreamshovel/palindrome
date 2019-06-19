@@ -1,41 +1,26 @@
-// Reverses a string.
-function reverse(string) {
-    return Array.from(string).reverse().join("");
-  }
-  
-  function Phrase(content) {
-    this.content = content;
-  
-    this.processor = function(string) {
-      return this.content.toLowerCase();
-    }
-  
-    this.processedContent = function processedContent() {
-      return this.processor(this.content);
-    }
-  
-    // Returns true if the phrase is a palindrome, false otherwise.
-    this.palindrome = function palindrome() {
-      return this.processedContent() === reverse(this.processedContent());
-    }
-  }
-  
-  function TranslatedPhrase(content, translation) {
-    this.content = content;
-    this.translation = translation;
-  
-    // Returns translation processed for palindrome testing.
-    this.processedContent = function processedContent() {
-      return this.processor(this.translation);
-    }
+module.exports = Phrase;
+
+// Adds `reverse` to all strings.
+String.prototype.reverse = function() {
+  return Array.from(this).reverse().join("");
+}
+
+// Defines a Phrase object.
+function Phrase(content) {
+  this.content = content;
+
+  // Returns content processed for palindrome testing.
+  this.processedContent = function processedContent() {
+    return this.letters().toLowerCase();
   }
 
-  //adds a blank detector to the native String protoype
-  String.prototype.blank = function() {
-   return !!this.match(/^\s*$/g);
-  } 
+  // Returns true if the phrase is a palindrome, false otherwise.
+  this.palindrome = function palindrome() {
+    return this.processedContent() === this.processedContent().reverse();
+  }
 
-//adds a last method to the native Array prototype
-Array.prototype.last = function() {
-  return this.slice(-1);
+  //Returns the letters in the content
+  this.letters = function letters() {
+    return (this.content.match(/[a-z]/gi) || []).join(""); 
+  }
 }
